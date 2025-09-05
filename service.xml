@@ -24,6 +24,9 @@
     <route path="/gravitino/configs?**">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/configs-with-args" to="request.url"/>
     </route>
+    <route path="/gravitino/ui/_next/static/css/bf4b253aec880afa.css">
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/static-path" to="response.body"/>
+    </route>
     <route path="/gravitino/ui/**">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/ui" to="request.url"/>
       <rewrite apply="GRAVITINOUI/gravitino/outbound/static-path" to="response.body"/>
