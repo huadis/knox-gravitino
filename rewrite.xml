@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rules>
-  <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/js/configs">
-    <rewrite template="{$frontend[url]}/gravitino/configs"/>
-  </rule>
-  <filter name="GRAVITINOUI/gravitino/outbound/configs">
-    <content type="*/x-javascript">
-      <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
-    </content>
-    <content type="*/javascript">
-      <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
-    </content>
-    <content type="*/html">
-      <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
-    </content>
-  </filter>
 
   <rule dir="IN" name="GRAVITINOUI/gravitino/inbound/root"
         pattern="*://*:*/**/gravitino">
@@ -36,8 +22,8 @@
   </rule>
 
   <rule dir="IN" name="GRAVITINOUI/gravitino/inbound/ui"
-        pattern="*://*:*/**/gravitino/ui/{path=**}">
-    <rewrite template="{$serviceUrl[GRAVITINOUI]}/ui/{path=**}"/>
+        pattern="*://*:*/**/gravitino/ui/{**}">
+    <rewrite template="{$serviceUrl[GRAVITINOUI]}/ui/{**}"/>
   </rule>
 
   <rule dir="IN" name="GRAVITINOUI/gravitino/inbound/configs-no-args"
@@ -50,7 +36,48 @@
     <rewrite template="{$serviceUrl[GRAVITINOUI]}/configs?{**}"/>
   </rule>
 
+  <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/static-path-rewrite">
+      <match pattern="static/chunks"/>
+      <rewrite template="{$frontend[url]}/gravitino/ui/_next/static/chunks"/>
+  </rule>
+
+  <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/ui-path-rewrite">
+      <match pattern="/ui"/>
+      <rewrite template="{$frontend[url]}/gravitino/ui"/>
+  </rule>
+
+  <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/api" pattern="/api/{path=**}">
+      <rewrite template="{$frontend[url]}/gravitino/api/{path=**}"/>
+  </rule>
+
   <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/static" pattern="/ui/{path=**}">
       <rewrite template="{$frontend[url]}/gravitino/ui/{path=**}"/>
   </rule>
+
+  <rule dir="OUT" name="GRAVITINOUI/gravitino/outbound/js/configs">
+    <rewrite template="{$frontend[url]}/gravitino/configs"/>
+  </rule>
+
+  <filter name="GRAVITINOUI/gravitino/outbound/root">
+    <content type="*/html">
+        <apply path="/ui" rule="GRAVITINOUI/gravitino/outbound/ui-path-rewrite"/>
+        <apply path="static/chunks" rule="GRAVITINOUI/gravitino/outbound/static-path-rewrite"/>
+    </content>
+  </filter>
+
+  <filter name="GRAVITINOUI/gravitino/outbound/static-path">
+    <content type="*/x-javascript">
+      <apply path="/ui" rule="GRAVITINOUI/gravitino/outbound/ui-path-rewrite"/>
+      <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
+      <apply path="static/chunks" rule="GRAVITINOUI/gravitino/outbound/static-path-rewrite"/>
+    </content>
+    <content type="*/javascript">
+      <apply path="/ui" rule="GRAVITINOUI/gravitino/outbound/ui-path-rewrite"/>
+      <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
+      <apply path="static/chunks" rule="GRAVITINOUI/gravitino/outbound/static-path-rewrite"/>
+    </content>
+    <content type="*/css">
+      <apply path="/ui" rule="GRAVITINOUI/gravitino/outbound/ui-path-rewrite"/>
+    </content>
+  </filter>
 </rules>
