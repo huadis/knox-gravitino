@@ -76,7 +76,7 @@
       <apply path="/configs" rule="GRAVITINOUI/gravitino/outbound/js/configs"/>
       <apply path="static/chunks" rule="GRAVITINOUI/gravitino/outbound/static-path-rewrite"/>
     </content>
-    <content type="*/css">
+    <content type="*/css" asType="text/html" >
       <apply path="/ui" rule="GRAVITINOUI/gravitino/outbound/ui-path-rewrite"/>
     </content>
   </filter>
