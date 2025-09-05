@@ -10,39 +10,34 @@
   </policies>
 
   <routes>
-    <route path="/ui">
-      <rewrite apply="GRAVITINOUI/gravitino/outbound/configs" to="response.body"/>
-    </route>
-    <route path="/ui/**">
-      <rewrite apply="GRAVITINOUI/gravitino/outbound/configs" to="response.body"/>
-    </route>
-
     <route path="/gravitino">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/root" to="request.url"/>
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/root" to="response.body"/>
     </route>
     <route path="/gravitino/">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/root" to="request.url"/>
-    </route>
-    <route path="/gravitino/**">
-      <rewrite apply="GRAVITINOUI/gravitino/inbound/path" to="request.url"/>
-    </route>
-    <route path="/gravitino/?**">
-      <rewrite apply="GRAVITINOUI/gravitino/inbound/args" to="request.url"/>
-    </route>
-    <route path="/gravitino/**?**">
-      <rewrite apply="GRAVITINOUI/gravitino/inbound/pathargs" to="request.url"/>
-    </route>
-    <route path="/gravitino/**?**">
-      <rewrite apply="GRAVITINOUI/gravitino/inbound/pathargs" to="request.url"/>
-    </route>
-    <route path="/gravitino/ui/**">
-      <rewrite apply="GRAVITINOUI/gravitino/inbound/ui" to="request.url"/>
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/root" to="response.body"/>
     </route>
     <route path="/gravitino/configs">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/configs-no-args" to="request.url"/>
     </route>
     <route path="/gravitino/configs?**">
       <rewrite apply="GRAVITINOUI/gravitino/inbound/configs-with-args" to="request.url"/>
+    </route>
+    <route path="/gravitino/ui/**">
+      <rewrite apply="GRAVITINOUI/gravitino/inbound/ui" to="request.url"/>
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/static-path" to="response.body"/>
+    </route>
+    <route path="/gravitino/?**">
+      <rewrite apply="GRAVITINOUI/gravitino/inbound/args" to="request.url"/>
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/root" to="response.body"/>
+    </route>
+    <route path="/gravitino/**?**">
+      <rewrite apply="GRAVITINOUI/gravitino/inbound/pathargs" to="request.url"/>
+      <rewrite apply="GRAVITINOUI/gravitino/outbound/root" to="response.body"/>
+    </route>
+    <route path="/gravitino/**">
+      <rewrite apply="GRAVITINOUI/gravitino/inbound/path" to="request.url"/>
     </route>
   </routes>
 </service>
